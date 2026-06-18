@@ -1,0 +1,622 @@
+{
+  "version": 1,
+  "settings": {
+    "board": {
+      "columns": 8,
+      "rows": 8,
+      "playerRows": 4
+    },
+    "shopSize": 5,
+    "benchSize": 8,
+    "maxLevel": 9,
+    "combineRule": {
+      "sameUnitCount": 3,
+      "maxStar": 3
+    }
+  },
+  "traits": {
+    "origins": {
+      "星网": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "全体友军每次攻击额外回复2点法力。"
+          },
+          {
+            "count": 4,
+            "effect": "星网单位技能伤害提升25%，全体友军每次攻击额外回复4点法力。"
+          }
+        ]
+      },
+      "雪庭": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "雪庭单位的攻击会使目标攻速降低15%，持续3秒。"
+          },
+          {
+            "count": 4,
+            "effect": "战斗开始时冻结敌方攻击力最高单位2秒，雪庭减速提高到25%。"
+          }
+        ]
+      },
+      "武馆": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "武馆单位获得15护甲和15魔抗。"
+          },
+          {
+            "count": 4,
+            "effect": "全体友军获得10%全能吸血，武馆单位双抗加成提高到30。"
+          }
+        ]
+      },
+      "暗巷": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "暗巷单位开战跳向敌方后排，首次攻击必定暴击。"
+          },
+          {
+            "count": 4,
+            "effect": "暗巷单位暴击伤害提高40%，参与击杀后获得40%攻速，持续4秒。"
+          }
+        ]
+      },
+      "牧场": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "战斗开始召唤1只小鸡协助作战。"
+          },
+          {
+            "count": 4,
+            "effect": "战斗开始召唤2只小鸡；召唤物死亡时治疗生命最低友军120点。"
+          }
+        ]
+      },
+      "龙印": {
+        "thresholds": [
+          {
+            "count": 1,
+            "effect": "龙印单位参与击杀后，本场战斗永久获得8%攻击力和法术强度。"
+          }
+        ]
+      }
+    },
+    "classes": {
+      "斗士": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "斗士获得250最大生命值。"
+          },
+          {
+            "count": 4,
+            "effect": "斗士获得550最大生命值，生命低于40%时额外获得20%减伤。"
+          }
+        ]
+      },
+      "刺客": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "刺客获得20%暴击率和15%暴击伤害。"
+          },
+          {
+            "count": 4,
+            "effect": "刺客获得35%暴击率和45%暴击伤害。"
+          }
+        ]
+      },
+      "射手": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "射手每3次攻击额外射出一次70%伤害的弹体。"
+          },
+          {
+            "count": 4,
+            "effect": "射手每2次攻击额外射出一次80%伤害的弹体。"
+          }
+        ]
+      },
+      "术士": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "术士获得20法术强度。"
+          },
+          {
+            "count": 4,
+            "effect": "术士获得45法术强度，首次施法后回复25点法力。"
+          }
+        ]
+      },
+      "辅助": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "辅助的治疗和护盾提高20%。"
+          },
+          {
+            "count": 4,
+            "effect": "辅助的治疗和护盾提高45%，战斗开始全队获得120护盾。"
+          }
+        ]
+      },
+      "守卫": {
+        "thresholds": [
+          {
+            "count": 2,
+            "effect": "守卫获得20护甲；相邻友军获得10护甲。"
+          },
+          {
+            "count": 4,
+            "effect": "守卫获得45护甲；相邻友军获得25护甲和25魔抗。"
+          }
+        ]
+      }
+    }
+  },
+  "units": [
+    {
+      "id": "tuantuan",
+      "name": "团团",
+      "cost": 1,
+      "origin": "牧场",
+      "class": "辅助",
+      "role": "治疗",
+      "range": 3,
+      "stats": {
+        "health": 500,
+        "attack": 35,
+        "attackSpeed": 0.65,
+        "armor": 20,
+        "magicResist": 20,
+        "mana": 40
+      },
+      "skill": {
+        "name": "团团抱抱",
+        "targeting": "lowestHealthAlly",
+        "description": "治疗生命值最低的友军120/180/280点，并提供80/120/180点护盾，持续4秒。"
+      }
+    },
+    {
+      "id": "jd",
+      "name": "JD",
+      "cost": 1,
+      "origin": "星网",
+      "class": "射手",
+      "role": "持续输出",
+      "range": 4,
+      "stats": {
+        "health": 450,
+        "attack": 45,
+        "attackSpeed": 0.75,
+        "armor": 15,
+        "magicResist": 15,
+        "mana": 50
+      },
+      "skill": {
+        "name": "三段校准",
+        "targeting": "currentTarget",
+        "description": "连续射击当前目标3次，每次造成55/80/125物理伤害。"
+      }
+    },
+    {
+      "id": "madao",
+      "name": "马刀",
+      "cost": 1,
+      "origin": "武馆",
+      "class": "斗士",
+      "role": "前排战士",
+      "range": 1,
+      "stats": {
+        "health": 650,
+        "attack": 55,
+        "attackSpeed": 0.6,
+        "armor": 35,
+        "magicResist": 20,
+        "mana": 60
+      },
+      "skill": {
+        "name": "横斩",
+        "targeting": "frontArc",
+        "description": "挥刀横斩，对前方扇形敌人造成100/150/240物理伤害。"
+      }
+    },
+    {
+      "id": "jianlao",
+      "name": "茧佬",
+      "cost": 1,
+      "origin": "雪庭",
+      "class": "守卫",
+      "role": "控制坦克",
+      "range": 1,
+      "stats": {
+        "health": 700,
+        "attack": 40,
+        "attackSpeed": 0.55,
+        "armor": 40,
+        "magicResist": 25,
+        "mana": 70
+      },
+      "skill": {
+        "name": "封茧",
+        "targeting": "self",
+        "description": "进入封茧状态2.5秒，获得35%/45%/60%减伤并嘲讽周围敌人。"
+      }
+    },
+    {
+      "id": "ccg",
+      "name": "CCG",
+      "cost": 1,
+      "origin": "星网",
+      "class": "术士",
+      "role": "法术输出",
+      "range": 3,
+      "stats": {
+        "health": 480,
+        "attack": 35,
+        "attackSpeed": 0.65,
+        "armor": 15,
+        "magicResist": 20,
+        "mana": 60
+      },
+      "skill": {
+        "name": "代码脉冲",
+        "targeting": "randomEnemy",
+        "description": "向随机敌人发射脉冲，造成160/230/360魔法伤害。"
+      }
+    },
+    {
+      "id": "aki",
+      "name": "AKI",
+      "cost": 2,
+      "origin": "暗巷",
+      "class": "刺客",
+      "role": "后排切入",
+      "range": 1,
+      "stats": {
+        "health": 650,
+        "attack": 65,
+        "attackSpeed": 0.75,
+        "armor": 25,
+        "magicResist": 25,
+        "mana": 60
+      },
+      "skill": {
+        "name": "影步首刀",
+        "targeting": "backlineEnemy",
+        "description": "闪到敌方后排，对目标造成170/260/420物理伤害；若击杀，回复30点法力。"
+      }
+    },
+    {
+      "id": "yuo",
+      "name": "YUO",
+      "cost": 2,
+      "origin": "星网",
+      "class": "辅助",
+      "role": "团队增益",
+      "range": 3,
+      "stats": {
+        "health": 600,
+        "attack": 40,
+        "attackSpeed": 0.65,
+        "armor": 20,
+        "magicResist": 25,
+        "mana": 70
+      },
+      "skill": {
+        "name": "加速节点",
+        "targeting": "nearbyAllies",
+        "description": "使相邻友军获得25%/35%/55%攻速，持续5秒。"
+      }
+    },
+    {
+      "id": "yin",
+      "name": "YIN",
+      "cost": 2,
+      "origin": "雪庭",
+      "class": "术士",
+      "role": "控制法师",
+      "range": 3,
+      "stats": {
+        "health": 560,
+        "attack": 40,
+        "attackSpeed": 0.6,
+        "armor": 20,
+        "magicResist": 25,
+        "mana": 70
+      },
+      "skill": {
+        "name": "寒音",
+        "targeting": "enemyLine",
+        "description": "对一列敌人造成140/210/330魔法伤害，并降低30%移速和攻速，持续3秒。"
+      }
+    },
+    {
+      "id": "dage",
+      "name": "大哥",
+      "cost": 2,
+      "origin": "武馆",
+      "class": "斗士",
+      "role": "主坦",
+      "range": 1,
+      "stats": {
+        "health": 850,
+        "attack": 60,
+        "attackSpeed": 0.6,
+        "armor": 40,
+        "magicResist": 30,
+        "mana": 80
+      },
+      "skill": {
+        "name": "顶住",
+        "targeting": "self",
+        "description": "获得200/300/480护盾；生命值低于40%时护盾提高50%。"
+      }
+    },
+    {
+      "id": "qianhan",
+      "name": "千寒",
+      "cost": 2,
+      "origin": "雪庭",
+      "class": "射手",
+      "role": "控制射手",
+      "range": 4,
+      "stats": {
+        "health": 560,
+        "attack": 55,
+        "attackSpeed": 0.75,
+        "armor": 20,
+        "magicResist": 20,
+        "mana": 60
+      },
+      "skill": {
+        "name": "千寒箭",
+        "targeting": "currentTarget",
+        "description": "射出寒箭造成150/230/360物理伤害，并冻结目标1.25/1.5/2秒。"
+      }
+    },
+    {
+      "id": "shuangye",
+      "name": "霜夜",
+      "cost": 3,
+      "origin": "雪庭",
+      "class": "刺客",
+      "role": "控制刺客",
+      "range": 1,
+      "stats": {
+        "health": 750,
+        "attack": 75,
+        "attackSpeed": 0.8,
+        "armor": 30,
+        "magicResist": 30,
+        "mana": 70
+      },
+      "skill": {
+        "name": "夜刃封喉",
+        "targeting": "lowestHealthEnemy",
+        "description": "闪至生命最低敌人身后，造成220/330/540物理伤害并沉默2秒。"
+      }
+    },
+    {
+      "id": "jinglao",
+      "name": "静佬",
+      "cost": 3,
+      "origin": "星网",
+      "class": "守卫",
+      "role": "法抗前排",
+      "range": 1,
+      "stats": {
+        "health": 900,
+        "attack": 55,
+        "attackSpeed": 0.55,
+        "armor": 35,
+        "magicResist": 45,
+        "mana": 80
+      },
+      "skill": {
+        "name": "静默领域",
+        "targeting": "areaAroundSelf",
+        "description": "展开领域4秒，领域内敌人造成的技能伤害降低25%/35%/55%。"
+      }
+    },
+    {
+      "id": "kobayashi_kanon",
+      "name": "小林花音",
+      "cost": 3,
+      "origin": "牧场",
+      "class": "辅助",
+      "role": "群体治疗",
+      "range": 3,
+      "stats": {
+        "health": 680,
+        "attack": 45,
+        "attackSpeed": 0.65,
+        "armor": 25,
+        "magicResist": 30,
+        "mana": 90
+      },
+      "skill": {
+        "name": "花音小调",
+        "targeting": "allAllies",
+        "description": "演奏4秒，每秒治疗全体友军45/70/110点生命。"
+      }
+    },
+    {
+      "id": "nnm",
+      "name": "NNM",
+      "cost": 3,
+      "origin": "暗巷",
+      "class": "射手",
+      "role": "爆发输出",
+      "range": 4,
+      "stats": {
+        "health": 650,
+        "attack": 80,
+        "attackSpeed": 0.7,
+        "armor": 25,
+        "magicResist": 25,
+        "mana": 70
+      },
+      "skill": {
+        "name": "远点穿透",
+        "targeting": "farthestEnemy",
+        "description": "锁定最远敌人发射穿透弹，对路径敌人造成230/350/560物理伤害。"
+      }
+    },
+    {
+      "id": "wjj",
+      "name": "WJJ",
+      "cost": 4,
+      "origin": "武馆",
+      "class": "守卫",
+      "role": "团队保护",
+      "range": 1,
+      "stats": {
+        "health": 1100,
+        "attack": 70,
+        "attackSpeed": 0.6,
+        "armor": 55,
+        "magicResist": 35,
+        "mana": 90
+      },
+      "skill": {
+        "name": "盾阵冲锋",
+        "targeting": "enemyCluster",
+        "description": "冲向敌人最密集区域，击退路径敌人并造成260/390/700物理伤害，同时给附近友军250/350/650护盾。"
+      }
+    },
+    {
+      "id": "alao",
+      "name": "A佬",
+      "cost": 4,
+      "origin": "星网",
+      "class": "术士",
+      "role": "核心法师",
+      "range": 3,
+      "stats": {
+        "health": 760,
+        "attack": 50,
+        "attackSpeed": 0.65,
+        "armor": 25,
+        "magicResist": 35,
+        "mana": 100
+      },
+      "skill": {
+        "name": "镜像编译",
+        "targeting": "lastAllySkill",
+        "description": "复制上一名友军技能的50%/70%/110%效果；若无可复制技能，则对随机敌人造成360/520/900魔法伤害。"
+      }
+    },
+    {
+      "id": "muji",
+      "name": "母鸡",
+      "cost": 4,
+      "origin": "牧场",
+      "class": "辅助",
+      "role": "召唤辅助",
+      "range": 3,
+      "stats": {
+        "health": 820,
+        "attack": 50,
+        "attackSpeed": 0.7,
+        "armor": 30,
+        "magicResist": 35,
+        "mana": 80
+      },
+      "skill": {
+        "name": "咯咯集结",
+        "targeting": "emptyAdjacentCells",
+        "description": "召唤2/3/5只小鸡。小鸡继承母鸡25%攻击力和生命值，并会优先吸引附近敌人。"
+      }
+    },
+    {
+      "id": "xiyangyang",
+      "name": "喜羊羊",
+      "cost": 4,
+      "origin": "牧场",
+      "class": "刺客",
+      "role": "灵活收割",
+      "range": 1,
+      "stats": {
+        "health": 850,
+        "attack": 85,
+        "attackSpeed": 0.85,
+        "armor": 35,
+        "magicResist": 30,
+        "mana": 70
+      },
+      "skill": {
+        "name": "风驰冲刺",
+        "targeting": "enemyLine",
+        "description": "冲刺穿过最多3名敌人，造成260/390/720物理伤害；若参与击杀，回复50点法力。"
+      }
+    },
+    {
+      "id": "gmj",
+      "name": "GMJ",
+      "cost": 5,
+      "origin": "暗巷",
+      "class": "术士",
+      "role": "终局爆发",
+      "range": 4,
+      "stats": {
+        "health": 900,
+        "attack": 60,
+        "attackSpeed": 0.7,
+        "armor": 30,
+        "magicResist": 40,
+        "mana": 120
+      },
+      "skill": {
+        "name": "黑巷终局",
+        "targeting": "multipleEnemies",
+        "description": "标记3/4/8名敌人，1.5秒后引爆，对目标及周围敌人造成420/650/1500魔法伤害。"
+      }
+    },
+    {
+      "id": "lin",
+      "name": "麟",
+      "cost": 5,
+      "origin": "龙印",
+      "class": "斗士",
+      "role": "终局主C",
+      "range": 1,
+      "stats": {
+        "health": 1200,
+        "attack": 95,
+        "attackSpeed": 0.8,
+        "armor": 45,
+        "magicResist": 45,
+        "mana": 100
+      },
+      "skill": {
+        "name": "麟影化身",
+        "targeting": "self",
+        "description": "化身8秒，获得45%/65%/120%攻速、25%全能吸血，普攻变为小范围溅射。"
+      }
+    }
+  ],
+  "summons": [
+    {
+      "id": "chick",
+      "name": "小鸡",
+      "origin": "牧场",
+      "class": "召唤物",
+      "range": 1,
+      "stats": {
+        "health": 220,
+        "attack": 25,
+        "attackSpeed": 0.75,
+        "armor": 10,
+        "magicResist": 10,
+        "mana": 0
+      }
+    }
+  ]
+}

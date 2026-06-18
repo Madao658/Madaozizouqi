@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MadaoFamily乱斗自走棋</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div id="game-modal" class="game-modal visible" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-panel">
+        <div class="modal-kicker">ROUND TABLE CHAOS</div>
+        <h2 id="modal-title">欢迎来到<br />MadaoFamily乱斗自走棋</h2>
+        <p id="modal-text">25 回合终局战，活下来，然后把牌桌掀成传说。</p>
+        <button id="modal-action" class="modal-button">开 始 乱 斗</button>
+      </div>
+    </div>
+
+    <main class="app-shell">
+      <section class="topbar">
+        <div class="brand">
+          <img src="assets/madao-family-avatar.png" alt="" />
+          <div>
+            <h1>MadaoFamily乱斗自走棋</h1>
+          </div>
+        </div>
+        <div class="stats-strip" aria-label="玩家状态">
+          <div><span>回合</span><strong id="round">1</strong></div>
+          <div><span>生命</span><strong id="hp">100</strong></div>
+          <div><span>金币</span><strong id="gold">4</strong></div>
+          <div><span>等级</span><strong id="level">2</strong></div>
+          <div><span>经验</span><strong id="xp">0/2</strong></div>
+          <div><span>上阵</span><strong id="unit-cap">0/2</strong></div>
+          <div><span>阶段</span><strong id="phase">备战</strong></div>
+        </div>
+      </section>
+
+      <section class="game-layout">
+        <aside class="left-panel">
+          <div class="panel-head">
+            <h2>羁绊</h2>
+          </div>
+          <div id="traits" class="traits"></div>
+          <div class="panel-head compact">
+            <h2>战斗日志</h2>
+            <button id="clear-log" class="icon-button" title="清空日志">×</button>
+          </div>
+          <ol id="log" class="battle-log"></ol>
+        </aside>
+
+        <section class="board-area">
+          <div id="board" class="board" aria-label="棋盘"></div>
+          <div class="controls">
+            <button id="start-battle" class="primary-button">开始战斗</button>
+            <button id="next-round" class="secondary-button">下一回合</button>
+          </div>
+        </section>
+
+        <aside class="right-panel">
+          <div class="panel-head">
+            <h2>备战区</h2>
+            <span id="bench-count" class="muted"></span>
+          </div>
+          <div id="bench" class="bench"></div>
+          <div class="panel-head">
+            <h2>商店</h2>
+            <span class="muted">5 格</span>
+          </div>
+          <div id="shop" class="shop"></div>
+          <div class="shop-actions">
+            <button id="reroll" class="secondary-button">刷新商店 -2金</button>
+            <button id="buy-xp" class="secondary-button">购买经验 +4</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <template id="piece-template">
+      <button class="piece" type="button">
+        <img class="piece-avatar" alt="" />
+        <span class="piece-cost"></span>
+        <span class="piece-name"></span>
+        <span class="piece-meta"></span>
+        <span class="piece-star"></span>
+      </button>
+    </template>
+
+    <script src="src/app.js"></script>
+  </body>
+</html>
