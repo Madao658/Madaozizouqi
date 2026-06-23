@@ -4,14 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MadaoFamily乱斗自走棋</title>
-    <link rel="stylesheet" href="src/styles.css" />
+    <link rel="stylesheet" href="src/styles.css?v=20260619-8" />
   </head>
   <body>
     <div id="game-modal" class="game-modal visible" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="modal-panel">
         <div class="modal-kicker">ROUND TABLE CHAOS</div>
         <h2 id="modal-title">欢迎来到<br />MadaoFamily乱斗自走棋</h2>
-        <p id="modal-text">25 回合终局战，活下来，然后把牌桌掀成传说。</p>
+        <p id="modal-text">一名真人，三家 AI。活到最后，然后把牌桌掀成传说。</p>
+        <div id="settlement-summary" class="settlement-summary" aria-live="polite"></div>
         <button id="modal-action" class="modal-button">开 始 乱 斗</button>
       </div>
     </div>
@@ -22,14 +23,15 @@
           <img src="assets/madao-family-avatar.png" alt="" />
           <div>
             <h1>MadaoFamily乱斗自走棋</h1>
+            <div class="brand-actions">
+              <button id="announcement-open" class="announcement-button" type="button" title="查看更新公告" aria-label="查看更新公告">📣</button>
+              <button id="pvp-open" class="pvp-entry-button" type="button">异步 PvP</button>
+            </div>
           </div>
         </div>
         <div class="stats-strip" aria-label="玩家状态">
           <div><span>回合</span><strong id="round">1</strong></div>
           <div><span>生命</span><strong id="hp">100</strong></div>
-          <div><span>金币</span><strong id="gold">4</strong></div>
-          <div><span>等级</span><strong id="level">2</strong></div>
-          <div><span>经验</span><strong id="xp">0/2</strong></div>
           <div><span>上阵</span><strong id="unit-cap">0/2</strong></div>
           <div><span>阶段</span><strong id="phase">备战</strong></div>
         </div>
@@ -37,6 +39,11 @@
 
       <section class="game-layout">
         <aside class="left-panel">
+          <div class="panel-head">
+            <h2>四人牌桌</h2>
+            <span class="muted">1 真人 · 3 AI</span>
+          </div>
+          <div id="standings" class="standings"></div>
           <div class="panel-head">
             <h2>羁绊</h2>
           </div>
@@ -53,7 +60,23 @@
           <div class="controls">
             <button id="start-battle" class="primary-button">开始战斗</button>
             <button id="next-round" class="secondary-button">下一回合</button>
+            <button id="battle-speed" class="secondary-button speed-button" aria-label="当前战斗速度 1 倍，点击切换速度">战斗速度 1×</button>
           </div>
+          <section id="pvp-setup-panel" class="pvp-setup-panel" aria-live="polite">
+            <div>
+              <strong>PvP 防守阵容</strong>
+              <p>重新摆放终局棋子，填写 1～8 位玩家 ID，然后生成阵容码。</p>
+            </div>
+            <label>玩家 ID<input id="pvp-player-id" type="text" maxlength="8" autocomplete="off" placeholder="例如 Madao" /></label>
+            <button id="pvp-save-lineup" class="primary-button" type="button">保存并生成阵容码</button>
+            <p id="pvp-setup-message" class="pvp-message"></p>
+            <div id="pvp-code-result" class="pvp-code-result">
+              <textarea id="pvp-own-code" readonly aria-label="我的阵容码"></textarea>
+              <button id="pvp-copy-own-code" class="secondary-button" type="button">复制阵容码</button>
+              <button id="pvp-finish-setup" class="secondary-button" type="button">完成并开始下一盘</button>
+            </div>
+          </section>
+          <section id="battle-stats" class="battle-stats" aria-live="polite"></section>
         </section>
 
         <aside class="right-panel">
@@ -64,16 +87,52 @@
           <div id="bench" class="bench"></div>
           <div class="panel-head">
             <h2>商店</h2>
-            <span class="muted">5 格</span>
+            <span class="muted">5 格 · 拖入可出售</span>
           </div>
           <div id="shop" class="shop"></div>
+          <div class="shop-status" aria-label="商店资源">
+            <div class="shop-resource gold-resource">
+              <span>金币</span>
+              <strong><span class="resource-icon">●</span><span id="gold">4</span></strong>
+            </div>
+            <div class="shop-resource level-resource">
+              <span>等级 / 经验</span>
+              <div class="level-progress-summary">
+                <strong><span id="level">2</span><small>级</small></strong>
+                <span class="shop-xp">经验 <b id="xp">0/2</b></span>
+              </div>
+            </div>
+            <div id="shop-odds-help" class="shop-odds-help">
+              <button id="shop-odds-toggle" class="shop-odds-toggle" type="button" aria-label="查看商店刷新概率" aria-controls="shop-odds" aria-expanded="false">?</button>
+              <div id="shop-odds" class="shop-odds-popover" role="tooltip"></div>
+            </div>
+          </div>
           <div class="shop-actions">
             <button id="reroll" class="secondary-button">刷新商店 -2金</button>
             <button id="buy-xp" class="secondary-button">购买经验 +4</button>
+            <button id="sell-unit" class="secondary-button sell-button" disabled>选择棋子后出售</button>
           </div>
         </aside>
       </section>
     </main>
+
+    <div id="pvp-modal" class="pvp-modal" role="dialog" aria-modal="true" aria-labelledby="pvp-modal-title">
+      <section class="pvp-modal-panel">
+        <button id="pvp-close" class="pvp-close" type="button" aria-label="关闭">×</button>
+        <div class="modal-kicker">LOCAL GHOST BATTLE</div>
+        <h2 id="pvp-modal-title">异步 PvP</h2>
+        <div id="pvp-lobby-content"></div>
+      </section>
+    </div>
+
+    <div id="announcement-modal" class="announcement-modal" role="dialog" aria-modal="true" aria-labelledby="announcement-title">
+      <section class="announcement-panel">
+        <button id="announcement-close" class="pvp-close" type="button" aria-label="关闭更新公告">×</button>
+        <div class="modal-kicker">UPDATE NOTICE</div>
+        <div id="announcement-content"></div>
+        <button id="announcement-confirm" class="modal-button" type="button">知道了</button>
+      </section>
+    </div>
 
     <template id="piece-template">
       <button class="piece" type="button">
@@ -85,6 +144,9 @@
       </button>
     </template>
 
-    <script src="src/app.js"></script>
+    <script src="src/update-notes.js?v=20260619-4"></script>
+    <script src="src/balance-config.js?v=20260619-6"></script>
+    <script src="src/game-data.js?v=20260619-6"></script>
+    <script src="src/app.js?v=20260619-9"></script>
   </body>
 </html>
